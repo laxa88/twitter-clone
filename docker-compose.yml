@@ -10,4 +10,6 @@ services:
     ports:
       - "15432:5432"
     volumes:
+    #   - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./docker/db/init:/docker-entrypoint-initdb.d
+    # command: postgres -c config_file=/etc/postgresql/postgresql.conf
