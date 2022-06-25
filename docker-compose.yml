@@ -1,6 +1,18 @@
 version: '3.7'
 services:
-  db:
+  node-db:
+    hostname: my-node-db
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_DB=mynodedb
+      - POSTGRES_USER=mynodeuser
+      - POSTGRES_PASSWORD=mynodepassword
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./docker/db/node-init:/docker-entrypoint-initdb.d
+
+  rust-db:
     hostname: my-db
     image: postgres:11-alpine
     environment:
@@ -8,8 +20,8 @@ services:
       - POSTGRES_USER=myuser
       - POSTGRES_PASSWORD=mypassword
     ports:
-      - "15432:5432"
+      - "15433:5432"
     volumes:
     #   - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf
-      - ./docker/db/init:/docker-entrypoint-initdb.d
+      - ./docker/db/rust-init:/docker-entrypoint-initdb.d
     # command: postgres -c config_file=/etc/postgresql/postgresql.conf
