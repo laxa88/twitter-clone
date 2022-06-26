@@ -7,6 +7,12 @@ This repository is just a practice project for me to write a full stack applicat
 - Language: Rust
 - Framework: Rocket
 
+## Backend (Node)
+
+- Language: Javascript
+- Framework: Express
+- DB: Postgres
+
 ## Frontend
 
 - Language: Typescript
@@ -22,3 +28,15 @@ Node application test:
 - Start the server(s): `cd node && npm start`
 - Hit the GET or POST endpoints on `localhost:3000`
 - Refer to `routes` and `services` source for implemention details.
+
+## Todos
+
+- Build node, svelte apps as docker image
+- Deploy all images for production
+- E2E tests
+  - in local
+  - in CI
+- CI deployment
+  - run tests
+  - build image in CI?
+  - push image to personal repo
