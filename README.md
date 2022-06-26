@@ -23,11 +23,17 @@ This repository is just a practice project for me to write a full stack applicat
 
 The Node backend is just a hello-world project to test that a node API server is able to communicate with a Postgres DB in a docker container.
 
-Node application test:
 - Start the docker container(s) in detached mode: `docker-compose up -d`
-- Start the server(s): `cd node && npm start`
-- Hit the GET or POST endpoints on `localhost:3000`
+- Start the server: `cd node && npm start`
+- Hit the endpoints on `localhost:3000`
 - Refer to `routes` and `services` source for implemention details.
+
+## Quick start (Rust)
+
+- Start the docker container(s) in detached mode: `docker-compose up -d`
+- Start the server: `cd rust && cargo run`
+- Hit the endpoints on `localhost:8000`
+- Refer to `main.rs` for details.
 
 ## Todos
 
