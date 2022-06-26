@@ -1,5 +1,6 @@
 use rocket::http::{ContentType, Header};
 use rocket::response::Responder;
+use rocket::serde::json::Json;
 use rocket::serde::Serialize;
 use rocket::Response;
 use rocket::{fairing::AdHoc, serde::Deserialize, State};
@@ -115,6 +116,27 @@ async fn get_account_by_id_3(mut db: Connection<MyRustDb>, id: i32) -> MyRespond
     }
 }
 
+#[get("/db4/<id>", format = "json")]
+async fn get_account_by_id_4(mut db: Connection<MyRustDb>, id: i32) -> Json<Option<Account>> {
+    println!("### get 4: {}", id);
+    let res = sqlx::query("SELECT * FROM account WHERE id = $1")
+        .bind(id)
+        .fetch_one(&mut *db)
+        .await
+        .and_then(|r| {
+            let res = Account {
+                id: r.try_get(0)?,
+                email: r.try_get(1)?,
+                password: r.try_get(2)?,
+            };
+            println!("### got {:?}", res);
+            Ok(res)
+        })
+        .ok();
+
+    Json(res)
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -127,7 +149,8 @@ fn rocket() -> _ {
                 get_tweet_by_id,
                 get_account_by_id_1,
                 get_account_by_id_2,
-                get_account_by_id_3
+                get_account_by_id_3,
+                get_account_by_id_4
             ],
         )
         .attach(AdHoc::config::<MyConfig>())
