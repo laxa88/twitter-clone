@@ -1,8 +1,7 @@
-// use std::string;
-
-// use postgres::{Client, NoTls};
-
+use rocket::http::{ContentType, Header};
+use rocket::response::Responder;
 use rocket::serde::Serialize;
+use rocket::Response;
 use rocket::{fairing::AdHoc, serde::Deserialize, State};
 use rocket_db_pools::sqlx::{self, Row};
 use rocket_db_pools::{Connection, Database};
@@ -43,9 +42,9 @@ async fn get_tweet_by_id(tweet_id: String, config: &State<MyConfig>) -> String {
     res
 }
 
-#[get("/db/<id>")]
+#[get("/db1/<id>")]
 async fn get_account_by_id_1(mut db: Connection<MyRustDb>, id: i32) -> Option<String> {
-    println!("### get: {}", id);
+    println!("### get 1: {}", id);
     sqlx::query("SELECT * FROM account WHERE id = $1")
         .bind(id)
         .fetch_one(&mut *db)
@@ -62,11 +61,26 @@ async fn get_account_by_id_1(mut db: Connection<MyRustDb>, id: i32) -> Option<St
         .ok()
 }
 
-// #[rocket::main]
-// async fn main() -> Result<(), rocket::Error> {
-//     let _rocket = rocket::build().mount("/", routes![index]).launch().await?;
-//     Ok(())
-// }
+#[get("/db2/<id>")]
+async fn get_account_by_id_2(mut db: Connection<MyRustDb>, id: i32) -> Option<Account> {
+    println!("### get 2: {}", id);
+    let res = sqlx::query("SELECT * FROM account WHERE id = $1")
+        .bind(id)
+        .fetch_one(&mut *db)
+        .await
+        .and_then(|r| {
+            let res = Account {
+                id: r.try_get(0)?,
+                email: r.try_get(1)?,
+                password: r.try_get(2)?,
+            };
+            println!("### got {:?}", res);
+            Ok(res)
+        })
+        .ok();
+
+    res
+}
 
 #[launch]
 fn rocket() -> _ {
@@ -74,7 +88,13 @@ fn rocket() -> _ {
         .attach(MyRustDb::init())
         .mount(
             "/",
-            routes![index, hello, get_tweet_by_id, get_account_by_id_1],
+            routes![
+                index,
+                hello,
+                get_tweet_by_id,
+                get_account_by_id_1,
+                get_account_by_id_2
+            ],
         )
         .attach(AdHoc::config::<MyConfig>())
 }
@@ -87,26 +107,14 @@ struct Account {
     password: String,
 }
 
-// fn main() {
-//     let mut db = Client::connect(
-//         "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb",
-//         NoTls,
-//     )
-//     .unwrap();
+impl<'r> Responder<'r, 'static> for Account {
+    fn respond_to(self, req: &'r rocket::Request<'_>) -> rocket::response::Result<'static> {
+        let string = format!("{}: {}, {}", self.id, self.email, self.password);
 
-//     let rows = db.query("SELECT * FROM account", &[]);
-//     let rows_result = rows.unwrap();
-//     for row in rows_result {
-//         let account = Account {
-//             id: row.get("id"),
-//             email: row.get("email"),
-//             password: row.get("password"),
-//         };
-
-//         println!("Found: {:?}", account);
-//     }
-
-//     let db_closed_result = db.close();
-
-//     assert!(db_closed_result.is_ok());
-// }
+        Response::build_from(string.respond_to(req)?)
+            .raw_header("X-Account-Id", self.id.to_string())
+            .raw_header("X-Account-Email", self.email)
+            .header(ContentType::new("application", "x-account"))
+            .ok()
+    }
+}
