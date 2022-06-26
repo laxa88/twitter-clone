@@ -82,6 +82,39 @@ async fn get_account_by_id_2(mut db: Connection<MyRustDb>, id: i32) -> Option<Ac
     res
 }
 
+#[derive(Responder)]
+#[response(status = 200, content_type = "json")]
+struct MyResponder {
+    inner: Account,
+    header: ContentType,
+    more: Header<'static>,
+}
+
+#[get("/db3/<id>")]
+async fn get_account_by_id_3(mut db: Connection<MyRustDb>, id: i32) -> MyResponder {
+    println!("### get 3: {}", id);
+    let res = sqlx::query("SELECT * FROM account WHERE id = $1")
+        .bind(id)
+        .fetch_one(&mut *db)
+        .await
+        .and_then(|r| {
+            let res = Account {
+                id: r.try_get(0)?,
+                email: r.try_get(1)?,
+                password: r.try_get(2)?,
+            };
+            println!("### got {:?}", res);
+            Ok(res)
+        })
+        .ok();
+
+    MyResponder {
+        inner: res.unwrap(),
+        header: ContentType::new("application", "x-account"),
+        more: Header::new("x-header", "header-value"),
+    }
+}
+
 #[launch]
 fn rocket() -> _ {
     rocket::build()
@@ -93,7 +126,8 @@ fn rocket() -> _ {
                 hello,
                 get_tweet_by_id,
                 get_account_by_id_1,
-                get_account_by_id_2
+                get_account_by_id_2,
+                get_account_by_id_3
             ],
         )
         .attach(AdHoc::config::<MyConfig>())
