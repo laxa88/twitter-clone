@@ -35,14 +35,25 @@ The Node backend is just a hello-world project to test that a node API server is
 - Hit the endpoints on `localhost:8000`
 - Refer to `main.rs` for details.
 
-## Todos
+## Todos (API)
 
-- Build node, svelte apps as docker image
-- Deploy all images for production
-- E2E tests
-  - in local
-  - in CI
-- CI deployment
-  - run tests
-  - build image in CI?
-  - push image to personal repo
+User
+- [ ] Create user
+- [ ] Auth user
+
+Tweet
+- [ ] Create tweet
+- [ ] Get tweet
+- [ ] Delete tweet
+
+## Todos (dev)
+
+- [ ] Build apps as docker image
+- [ ] Deploy all images for production
+- [ ] E2E tests
+  - [ ] in local
+  - [ ] in CI
+- [ ] CI deployment
+  - [ ] run tests
+  - [ ] build image in CI
+  - [ ] push image to personal repo
