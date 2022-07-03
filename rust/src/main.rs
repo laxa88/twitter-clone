@@ -1,7 +1,8 @@
+use model::config::Config;
+use rocket::fairing::AdHoc;
 use rocket::http::ContentType;
 use rocket::response::Responder;
 use rocket::Response;
-use rocket::{fairing::AdHoc, serde::Deserialize, State};
 use rocket_db_pools::Database;
 
 mod service;
@@ -9,40 +10,24 @@ use service::account::get_account_by_id_1;
 use service::account::get_account_by_id_2;
 use service::account::get_account_by_id_3;
 use service::account::get_account_by_id_4;
+use service::tweet::get_tweet_by_id;
 
 mod model;
 use model::account::Account;
 use model::my_rust_db::MyRustDb;
-
-#[derive(Deserialize)]
-#[serde(crate = "rocket::serde")]
-struct MyConfig {
-    my_rocket_var_1: String,
-    my_rocket_var_2: f32,
-}
 
 #[macro_use]
 extern crate rocket;
 
 #[get("/")]
 async fn index() -> &'static str {
-    let res = "Home";
+    let res = "Server is running";
     res
 }
 
 #[get("/hello")]
 async fn hello() -> String {
     let res = format!("Hello {}!", 123);
-    res
-}
-
-// Note: signature order isn't strict
-#[get("/<tweet_id>")]
-async fn get_tweet_by_id(tweet_id: String, config: &State<MyConfig>) -> String {
-    let res = format!(
-        "Tweet {}, {}, {}!",
-        tweet_id, config.my_rocket_var_1, config.my_rocket_var_2
-    );
     res
 }
 
@@ -62,7 +47,7 @@ fn rocket() -> _ {
                 get_account_by_id_4
             ],
         )
-        .attach(AdHoc::config::<MyConfig>())
+        .attach(AdHoc::config::<Config>())
 }
 
 impl<'r> Responder<'r, 'static> for Account {
