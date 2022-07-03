@@ -6,6 +6,9 @@ use rocket::{fairing::AdHoc, serde::Deserialize, State};
 use rocket_db_pools::sqlx::{self, Row};
 use rocket_db_pools::{Connection, Database};
 
+mod model;
+use model::MyRustDb;
+
 mod account;
 use account::Account;
 
@@ -15,10 +18,6 @@ struct MyConfig {
     my_rocket_var_1: String,
     my_rocket_var_2: f32,
 }
-
-#[derive(Database)]
-#[database("myrustdb")]
-struct MyRustDb(sqlx::PgPool);
 
 #[macro_use]
 extern crate rocket;
