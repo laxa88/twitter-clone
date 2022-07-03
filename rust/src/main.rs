@@ -7,7 +7,7 @@ use rocket_db_pools::sqlx::{self, Row};
 use rocket_db_pools::{Connection, Database};
 
 mod model;
-use model::MyRustDb;
+use model::my_rust_db::MyRustDb;
 
 mod account;
 use account::Account;
