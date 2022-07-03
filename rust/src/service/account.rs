@@ -16,7 +16,7 @@ pub async fn get_account_by_id_1(mut db: Connection<MyRustDb>, id: i32) -> Optio
         .fetch_one(&mut *db)
         .await
         .and_then(|r| {
-            let res = Account::create_from_db(r);
+            let res = Account::build_from_db(r);
             Ok(res.email)
         })
         .ok()
@@ -30,7 +30,7 @@ pub async fn get_account_by_id_2(mut db: Connection<MyRustDb>, id: i32) -> Optio
         .fetch_one(&mut *db)
         .await
         .and_then(|r| {
-            let res = Account::create_from_db(r);
+            let res = Account::build_from_db(r);
             println!("### got {:?}", res);
             Ok(res)
         })
@@ -55,7 +55,7 @@ pub async fn get_account_by_id_3(mut db: Connection<MyRustDb>, id: i32) -> MyRes
         .fetch_one(&mut *db)
         .await
         .and_then(|r| {
-            let res = Account::create_from_db(r);
+            let res = Account::build_from_db(r);
             println!("### got {:?}", res);
             Ok(res)
         })

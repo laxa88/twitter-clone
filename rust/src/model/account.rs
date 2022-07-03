@@ -11,7 +11,7 @@ pub struct Account {
 }
 
 impl Account {
-    pub fn create_from_db(row: PgRow) -> Self {
+    pub fn build_from_db(row: PgRow) -> Self {
         Self {
             id: row.get(0),
             email: row.get(1),
