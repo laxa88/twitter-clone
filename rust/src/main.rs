@@ -1,11 +1,13 @@
 use rocket::http::{ContentType, Header};
 use rocket::response::Responder;
 use rocket::serde::json::Json;
-use rocket::serde::Serialize;
 use rocket::Response;
 use rocket::{fairing::AdHoc, serde::Deserialize, State};
 use rocket_db_pools::sqlx::{self, Row};
 use rocket_db_pools::{Connection, Database};
+
+mod account;
+use account::Account;
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -154,14 +156,6 @@ fn rocket() -> _ {
             ],
         )
         .attach(AdHoc::config::<MyConfig>())
-}
-
-#[derive(Debug, Serialize)]
-#[serde(crate = "rocket::serde")]
-struct Account {
-    id: i32,
-    email: String,
-    password: String,
 }
 
 impl<'r> Responder<'r, 'static> for Account {
