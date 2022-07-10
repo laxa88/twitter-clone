@@ -15,7 +15,7 @@ use service::tweet::get_tweet_by_id;
 
 mod model;
 use model::account::Account;
-use model::my_rust_db::MyRustDb;
+use model::api::MyRustDb;
 
 #[macro_use]
 extern crate rocket;

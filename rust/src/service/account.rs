@@ -1,11 +1,13 @@
 use rocket::http::{ContentType, Header};
+use rocket::response::status::{Created, NotFound};
 use rocket::response::Responder;
 use rocket::serde::json::Json;
-use rocket_db_pools::sqlx;
 use rocket_db_pools::sqlx::Row;
 use rocket_db_pools::Connection;
+use rocket_db_pools::{sqlx, Error};
 
 use crate::model::account::{Account, AccountCreate};
+use crate::model::api::ApiError;
 use crate::MyRustDb;
 
 #[get("/db1/<id>")]
@@ -94,14 +96,17 @@ pub async fn get_account_by_id_4(mut db: Connection<MyRustDb>, id: i32) -> Json<
 pub async fn create_account(
     new_account: Json<AccountCreate>,
     mut db: Connection<MyRustDb>,
-) -> String {
-    sqlx::query("INSERT INTO account (email, username, password) VALUES ($1,$2,$3)")
+) -> Result<Created<Json<String>>, Json<ApiError>> {
+    sqlx::query("INSERT INTO account (email, username, password) VALUES ($1, $2, $3)")
         .bind(new_account.email.clone())
         .bind(new_account.username.clone())
         .bind(new_account.password.clone())
         .execute(&mut *db)
         .await
-        .ok();
-
-    "Ok".to_string()
+        .map(|_| Created::new("/").body(Json("Ok".to_string())))
+        .map_err(|e| {
+            Json(ApiError {
+                details: e.to_string(),
+            })
+        })
 }
