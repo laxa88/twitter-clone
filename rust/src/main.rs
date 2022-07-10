@@ -11,6 +11,7 @@ use service::account::get_account_by_id_1;
 use service::account::get_account_by_id_2;
 use service::account::get_account_by_id_3;
 use service::account::get_account_by_id_4;
+use service::account::list_accounts;
 use service::tweet::get_tweet_by_id;
 
 mod model;
@@ -41,6 +42,7 @@ fn rocket() -> _ {
             routes![
                 index,
                 hello,
+                list_accounts,
                 create_account,
                 get_tweet_by_id,
                 get_account_by_id_1,

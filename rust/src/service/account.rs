@@ -1,10 +1,10 @@
 use rocket::http::{ContentType, Header};
-use rocket::response::status::{Created, NotFound};
+use rocket::response::status::Created;
 use rocket::response::Responder;
 use rocket::serde::json::Json;
+use rocket_db_pools::sqlx;
 use rocket_db_pools::sqlx::Row;
 use rocket_db_pools::Connection;
-use rocket_db_pools::{sqlx, Error};
 
 use crate::model::account::{Account, AccountCreate};
 use crate::model::api::ApiError;
@@ -90,6 +90,31 @@ pub async fn get_account_by_id_4(mut db: Connection<MyRustDb>, id: i32) -> Json<
         .ok();
 
     Json(res)
+}
+
+#[get("/accounts", format = "json")]
+pub async fn list_accounts(mut db: Connection<MyRustDb>) -> Json<Vec<Account>> {
+    sqlx::query("SELECT * FROM account")
+        .fetch_all(&mut *db)
+        .await
+        .map(|row| {
+            let res = row
+                .iter()
+                .map(|r| {
+                    let acc = Account {
+                        id: r.try_get(0).unwrap(),
+                        email: r.try_get(1).unwrap(),
+                        username: r.try_get(2).unwrap(),
+                        password: r.try_get(3).unwrap(),
+                    };
+
+                    acc
+                })
+                .collect();
+
+            Json(res)
+        })
+        .expect("Oh no")
 }
 
 #[post("/account/create", data = "<new_account>")]
