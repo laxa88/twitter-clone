@@ -44,9 +44,26 @@ User
 - [ ] Auth user
 
 Tweet
-- [ ] Create tweet
-- [ ] Get tweet
+- [x] Create tweet
+- [x] Get tweet by ID
 - [ ] Delete tweet
+- [ ] Like tweet
+
+LikedTweet
+- [ ] Create liked tweet
+- [ ] Unlike tweet
+
+Follower
+- [ ] Follow user
+- [ ] Unfollow user
+- [ ] Get followers by user ID
+
+## Todos (UI)
+
+- [ ] Login page
+  - [ ] Logout
+  - [ ] Show own tweets
+  - [ ] Show tweets by followed
 
 ## Todos (dev)
 
@@ -59,3 +76,9 @@ Tweet
   - [ ] run tests
   - [ ] build image in CI
   - [ ] push image to personal repo
+
+## Will not do
+
+- Block/unblock user and tweets
+- Tweet replies
+- Retweets
