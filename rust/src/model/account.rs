@@ -1,4 +1,4 @@
-use rocket::serde::Serialize;
+use rocket::serde::{Deserialize, Serialize};
 use rocket_db_pools::sqlx::{postgres::PgRow, Row};
 
 #[derive(Debug, Serialize)]
@@ -19,4 +19,12 @@ impl Account {
             password: row.get(3),
         }
     }
+}
+
+#[derive(Debug, Deserialize, FromForm)]
+#[serde(crate = "rocket::serde")]
+pub struct AccountCreate {
+    pub email: String,
+    pub username: String,
+    pub password: String,
 }

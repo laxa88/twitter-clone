@@ -5,7 +5,7 @@ use rocket_db_pools::sqlx;
 use rocket_db_pools::sqlx::Row;
 use rocket_db_pools::Connection;
 
-use crate::Account;
+use crate::model::account::{Account, AccountCreate};
 use crate::MyRustDb;
 
 #[get("/db1/<id>")]
@@ -88,4 +88,20 @@ pub async fn get_account_by_id_4(mut db: Connection<MyRustDb>, id: i32) -> Json<
         .ok();
 
     Json(res)
+}
+
+#[post("/account/create", data = "<new_account>")]
+pub async fn create_account(
+    new_account: Json<AccountCreate>,
+    mut db: Connection<MyRustDb>,
+) -> String {
+    sqlx::query("INSERT INTO account (email, username, password) VALUES ($1,$2,$3)")
+        .bind(new_account.email.clone())
+        .bind(new_account.username.clone())
+        .bind(new_account.password.clone())
+        .execute(&mut *db)
+        .await
+        .ok();
+
+    "Ok".to_string()
 }
