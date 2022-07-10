@@ -7,6 +7,7 @@ use rocket_db_pools::Database;
 
 mod service;
 use service::account::create_account;
+use service::account::get_account_by_id;
 use service::account::get_account_by_id_1;
 use service::account::get_account_by_id_2;
 use service::account::get_account_by_id_3;
@@ -42,6 +43,7 @@ fn rocket() -> _ {
             routes![
                 index,
                 hello,
+                get_account_by_id,
                 list_accounts,
                 create_account,
                 get_tweet_by_id,

@@ -1,5 +1,5 @@
 use rocket::http::{ContentType, Header};
-use rocket::response::status::Created;
+use rocket::response::status::{Created, NotFound};
 use rocket::response::Responder;
 use rocket::serde::json::Json;
 use rocket_db_pools::sqlx;
@@ -115,6 +115,32 @@ pub async fn list_accounts(mut db: Connection<MyRustDb>) -> Json<Vec<Account>> {
             Json(res)
         })
         .expect("Oh no")
+}
+
+#[get("/account/<id>", format = "json")]
+pub async fn get_account_by_id(
+    mut db: Connection<MyRustDb>,
+    id: i32,
+) -> Result<Json<Account>, NotFound<Json<ApiError>>> {
+    sqlx::query("SELECT * FROM account WHERE id = $1")
+        .bind(id)
+        .fetch_one(&mut *db)
+        .await
+        .map(|r| {
+            let acc = Account {
+                id: r.try_get(0).unwrap(),
+                email: r.try_get(1).unwrap(),
+                username: r.try_get(2).unwrap(),
+                password: r.try_get(3).unwrap(),
+            };
+
+            Json(acc)
+        })
+        .map_err(|e| {
+            NotFound(Json(ApiError {
+                details: e.to_string(),
+            }))
+        })
 }
 
 #[post("/account/create", data = "<new_account>")]
