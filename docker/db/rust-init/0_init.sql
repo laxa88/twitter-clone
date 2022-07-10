@@ -26,7 +26,7 @@ CREATE TABLE
         id INT GENERATED ALWAYS AS IDENTITY,
         account_id INT,
         body TEXT,
-        created_at TIMESTAMP DEFAULT now(),
+        created_at TIMESTAMPTZ DEFAULT now(),
         PRIMARY KEY(id),
         CONSTRAINT fk_account FOREIGN KEY(account_id) REFERENCES account(id)
     );
@@ -42,3 +42,5 @@ CREATE TABLE
         CONSTRAINT fk_account FOREIGN KEY(account_id) REFERENCES account(id),
         CONSTRAINT fk_follower_account FOREIGN KEY(follower_account_id) REFERENCES account(id)
     );
+
+SET TIME ZONE 'Asia/Tokyo';

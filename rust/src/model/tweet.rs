@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc};
 use rocket::serde::{Deserialize, Serialize};
 use rocket_db_pools::sqlx::{postgres::PgRow, Row};
 
@@ -7,7 +8,7 @@ pub struct Tweet {
     pub id: i32,
     pub account_id: i32,
     pub body: String,
-    // pub created_at: String, FIXME: how to convert TIMESTAMP type?
+    pub created_at: DateTime<Utc>,
 }
 
 impl Tweet {
@@ -16,7 +17,7 @@ impl Tweet {
             id: row.get(0),
             account_id: row.get(1),
             body: row.get(2),
-            // created_at: row.get(3),
+            created_at: row.get(3),
         }
     }
 }
