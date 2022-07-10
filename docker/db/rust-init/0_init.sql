@@ -26,7 +26,7 @@ CREATE TABLE
         id INT GENERATED ALWAYS AS IDENTITY,
         account_id INT,
         body TEXT,
-        created_at TIMESTAMP,
+        created_at TIMESTAMP DEFAULT now(),
         PRIMARY KEY(id),
         CONSTRAINT fk_account FOREIGN KEY(account_id) REFERENCES account(id)
     );

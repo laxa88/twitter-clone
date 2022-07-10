@@ -38,7 +38,9 @@ The Node backend is just a hello-world project to test that a node API server is
 ## Todos (API)
 
 User
-- [ ] Create user
+- [x] Create user
+- [x] List users
+- [x] Get user by ID
 - [ ] Auth user
 
 Tweet

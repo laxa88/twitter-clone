@@ -55,3 +55,8 @@ pub async fn create_account(
             })
         })
 }
+
+/*
+ * STOPPED HERE / TODO
+ * - get account by username
+ */

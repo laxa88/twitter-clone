@@ -6,6 +6,7 @@ mod service;
 use service::account::create_account;
 use service::account::get_account_by_id;
 use service::account::list_accounts;
+use service::tweet::create_tweet;
 use service::tweet::get_tweet_by_id;
 
 mod model;
@@ -27,11 +28,12 @@ fn rocket() -> _ {
         .mount(
             "/",
             routes![
-                index,
-                get_account_by_id,
-                list_accounts,
                 create_account,
+                create_tweet,
+                get_account_by_id,
                 get_tweet_by_id,
+                index,
+                list_accounts,
             ],
         )
         .attach(AdHoc::config::<Config>())
