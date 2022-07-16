@@ -10,6 +10,9 @@ use service::tweet::create_tweet;
 use service::tweet::get_tweet_by_id;
 use service::tweet::get_tweets_by_username;
 
+mod lib;
+use lib::cors::CORS;
+
 mod model;
 use model::api::MyRustDb;
 
@@ -26,6 +29,7 @@ async fn index() -> &'static str {
 fn rocket() -> _ {
     rocket::build()
         .attach(MyRustDb::init())
+        .attach(CORS)
         .mount(
             "/",
             routes![
