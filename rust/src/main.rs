@@ -8,6 +8,7 @@ use service::account::get_account_by_id;
 use service::account::list_accounts;
 use service::tweet::create_tweet;
 use service::tweet::get_tweet_by_id;
+use service::tweet::get_tweets_by_username;
 
 mod model;
 use model::api::MyRustDb;
@@ -32,6 +33,7 @@ fn rocket() -> _ {
                 create_tweet,
                 get_account_by_id,
                 get_tweet_by_id,
+                get_tweets_by_username,
                 index,
                 list_accounts,
             ],

@@ -24,7 +24,22 @@ pub async fn get_tweet_by_id(
         })
 }
 
-// TODO get tweets by user
+#[get("/tweets/<username>")]
+pub async fn get_tweets_by_username(
+    mut db: Connection<MyRustDb>,
+    username: String,
+) -> Result<Json<Tweet>, NotFound<Json<ApiError>>> {
+    sqlx::query("SELECT * FROM tweet JOIN account ON tweet.account_id = account.id WHERE account.username = $1")
+        .bind(username)
+        .fetch_one(&mut *db)
+        .await
+        .map(|r| Json(Tweet::build_from_db(&r)))
+        .map_err(|e| {
+            NotFound(Json(ApiError {
+                details: e.to_string(),
+            }))
+        })
+}
 
 #[post("/tweet/create", data = "<new_tweet>")]
 pub async fn create_tweet(
