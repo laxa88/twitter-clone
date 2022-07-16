@@ -39,6 +39,7 @@ The Node backend is just a hello-world project to test that a node API server is
 
 User
 - [x] Create user
+  - [ ] Validate empty inputs
 - [x] List users
 - [x] Get user by ID
 - [ ] Auth user
