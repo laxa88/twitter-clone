@@ -19,15 +19,16 @@ struct Claims {
     pub username: String,
 }
 
+// Reference: https://blog.logrocket.com/jwt-authentication-in-rust/
 pub fn sign_jwt(account: Account) -> String {
-    let start = SystemTime::now();
-    let since_epoch = start
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards");
+    let expiration = chrono::offset::Utc::now()
+        .checked_add_signed(chrono::Duration::seconds(60 * 5)) // expire in 5 minutes
+        .expect("valid timestamp")
+        .timestamp();
 
     // Create and return signed token
     let claims = Claims {
-        exp: since_epoch.as_secs() as usize,
+        exp: expiration as usize,
         id: account.id,
         email: account.email,
         username: account.username,
