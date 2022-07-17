@@ -11,6 +11,7 @@ pub struct Claims {
     // iss: String, // Optional. Issuer
     // nbf: usize, // Optional. Not Before (as UTC timestamp)
     // sub: String, // Optional. Subject (whom token refers to)
+    pub id: i32,
     pub email: String,
     pub username: String,
 }

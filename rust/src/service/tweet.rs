@@ -7,9 +7,12 @@ use crate::model::api::ApiError;
 use crate::model::tweet::{Tweet, TweetCreate};
 use crate::MyRustDb;
 
+use crate::model::account::Account;
+
 #[get("/tweet/<tweet_id>")]
 pub async fn get_tweet_by_id(
     mut db: Connection<MyRustDb>,
+    _account: Account, // FromRequest validation
     tweet_id: i32,
 ) -> Result<Json<Tweet>, NotFound<Json<ApiError>>> {
     sqlx::query("SELECT * FROM tweet WHERE id = $1")
@@ -27,6 +30,7 @@ pub async fn get_tweet_by_id(
 #[get("/tweets/<username>")]
 pub async fn get_tweets_by_username(
     mut db: Connection<MyRustDb>,
+    _account: Account, // FromRequest validation
     username: String,
 ) -> Result<Json<Tweet>, NotFound<Json<ApiError>>> {
     sqlx::query("SELECT * FROM tweet JOIN account ON tweet.account_id = account.id WHERE account.username = $1")
@@ -44,6 +48,7 @@ pub async fn get_tweets_by_username(
 #[post("/tweet/create", data = "<new_tweet>")]
 pub async fn create_tweet(
     new_tweet: Json<TweetCreate>,
+    _account: Account, // FromRequest validation
     mut db: Connection<MyRustDb>,
 ) -> Result<Created<Json<String>>, Json<ApiError>> {
     sqlx::query("INSERT INTO tweet (account_id, body) VALUES ($1, $2)")

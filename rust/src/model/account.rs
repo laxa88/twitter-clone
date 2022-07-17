@@ -1,8 +1,15 @@
-use rocket::http::ContentType;
+use jsonwebtoken::{decode, DecodingKey, Validation};
+use rocket::http::{ContentType, Status};
+use rocket::outcome::Outcome;
+use rocket::request::{self, FromRequest, Request};
 use rocket::response::Responder;
 use rocket::serde::{Deserialize, Serialize};
 use rocket::Response;
 use rocket_db_pools::sqlx::{postgres::PgRow, Row};
+
+use crate::lib::jwt::Claims;
+
+use super::api::ApiError;
 
 #[derive(Debug, Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -46,5 +53,35 @@ impl<'r> Responder<'r, 'static> for Account {
             .raw_header("X-Account-Email", self.email)
             .header(ContentType::new("application", "x-account"))
             .ok()
+    }
+}
+
+// Reference: https://stackoverflow.com/questions/69271458/lifetimes-do-not-match-method-in-trait-when-get-token-from-request
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for Account {
+    type Error = ApiError;
+
+    async fn from_request(request: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
+        let auth: Vec<_> = request.headers().get("authorization").collect();
+        let jwt_str = auth.get(0).unwrap();
+        let jwt = &jwt_str[7..]; // Omit "Bearer " prefix
+
+        match decode::<Claims>(
+            &jwt,
+            &DecodingKey::from_secret(b"some-secret-key"),
+            &Validation::default(),
+        ) {
+            Ok(r) => Outcome::Success(Account {
+                id: r.claims.id,
+                email: r.claims.email,
+                username: r.claims.username,
+            }),
+            Err(e) => Outcome::Failure((
+                Status::BadRequest,
+                ApiError {
+                    details: e.to_string(),
+                },
+            )),
+        }
     }
 }
