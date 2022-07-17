@@ -30,6 +30,13 @@ pub struct AccountCreate {
     pub password: String,
 }
 
+#[derive(Debug, Deserialize, FromForm)]
+#[serde(crate = "rocket::serde")]
+pub struct AccountLogin {
+    pub username: String,
+    pub password: String,
+}
+
 impl<'r> Responder<'r, 'static> for Account {
     fn respond_to(self, req: &'r rocket::Request<'_>) -> rocket::response::Result<'static> {
         let string = format!("{}: {}", self.id, self.email);

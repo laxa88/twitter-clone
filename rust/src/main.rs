@@ -6,6 +6,7 @@ mod service;
 use service::account::create_account;
 use service::account::get_account_by_id;
 use service::account::list_accounts;
+use service::account::login_account;
 use service::tweet::create_tweet;
 use service::tweet::get_tweet_by_id;
 use service::tweet::get_tweets_by_username;
@@ -40,6 +41,7 @@ fn rocket() -> _ {
                 get_tweets_by_username,
                 index,
                 list_accounts,
+                login_account,
             ],
         )
         .attach(AdHoc::config::<Config>())
