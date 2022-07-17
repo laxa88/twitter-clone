@@ -1,5 +1,3 @@
-use std::time::{SystemTime, UNIX_EPOCH};
-
 use rocket::response::status::{Created, NotFound};
 use rocket::serde::json::Json;
 use rocket_db_pools::sqlx;
@@ -9,7 +7,7 @@ use crate::model::account::{Account, AccountCreate, AccountLogin};
 use crate::model::api::ApiError;
 use crate::MyRustDb;
 
-use crate::lib::jwt::{sign_jwt, Claims};
+use crate::lib::jwt::sign_jwt;
 
 #[get("/accounts", format = "json")]
 pub async fn list_accounts(mut db: Connection<MyRustDb>) -> Json<Vec<Account>> {
@@ -79,20 +77,7 @@ pub async fn login_account(
             // if user found, login is successful.
             let account = Account::build_from_db(&r);
 
-            let start = SystemTime::now();
-            let since_epoch = start
-                .duration_since(UNIX_EPOCH)
-                .expect("Time went backwards");
-
-            // Create and return signed token
-            let my_claims = Claims {
-                exp: since_epoch.as_secs() as usize,
-                id: account.id,
-                email: account.email,
-                username: account.username,
-            };
-
-            sign_jwt(&my_claims)
+            sign_jwt(account)
         })
         .map_err(|e| {
             NotFound(Json(ApiError {

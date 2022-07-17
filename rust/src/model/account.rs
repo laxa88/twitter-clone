@@ -1,4 +1,3 @@
-use jsonwebtoken::{decode, DecodingKey, Validation};
 use rocket::http::{ContentType, Status};
 use rocket::outcome::Outcome;
 use rocket::request::{self, FromRequest, Request};
@@ -7,7 +6,7 @@ use rocket::serde::{Deserialize, Serialize};
 use rocket::Response;
 use rocket_db_pools::sqlx::{postgres::PgRow, Row};
 
-use crate::lib::jwt::Claims;
+use crate::lib::jwt::validate_jwt;
 
 use super::api::ApiError;
 
@@ -66,16 +65,8 @@ impl<'r> FromRequest<'r> for Account {
         let jwt_str = auth.get(0).unwrap();
         let jwt = &jwt_str[7..]; // Omit "Bearer " prefix
 
-        match decode::<Claims>(
-            &jwt,
-            &DecodingKey::from_secret(b"some-secret-key"),
-            &Validation::default(),
-        ) {
-            Ok(r) => Outcome::Success(Account {
-                id: r.claims.id,
-                email: r.claims.email,
-                username: r.claims.username,
-            }),
+        match validate_jwt(jwt) {
+            Ok(account) => Outcome::Success(account),
             Err(e) => Outcome::Failure((
                 Status::BadRequest,
                 ApiError {
