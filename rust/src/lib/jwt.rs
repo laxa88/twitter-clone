@@ -21,6 +21,8 @@ struct Claims {
 
 // Reference: https://blog.logrocket.com/jwt-authentication-in-rust/
 pub fn sign_jwt(account: Account) -> String {
+    // Note: Tokens have extra 60 seconds before it truly expires,
+    // probaby to allow some buffer time to renew the token.
     let expiration = chrono::offset::Utc::now()
         .checked_add_signed(chrono::Duration::seconds(60 * 5)) // expire in 5 minutes
         .expect("valid timestamp")
