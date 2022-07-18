@@ -42,29 +42,28 @@ User
   - [ ] Validate empty inputs
 - [x] List users
 - [x] Get user by ID
-- [ ] Auth user
+- [x] Auth user
 
 Tweet
 - [x] Create tweet
 - [x] Get tweet by ID
-- [ ] Delete tweet
-- [ ] Like tweet
+- [ ] ~Delete tweet~
 
-LikedTweet
-- [ ] Create liked tweet
-- [ ] Unlike tweet
-
-Follower
-- [ ] Follow user
-- [ ] Unfollow user
-- [ ] Get followers by user ID
+Other
+- [ ] Generic error handler
+- [ ] List pagination
 
 ## Todos (UI)
 
-- [ ] Login page
+- Landing page
+  - [x] Register user
+  - [ ] Login
   - [ ] Logout
+
+- Logged-in pages
+  - [ ] Add tweet
   - [ ] Show own tweets
-  - [ ] Show tweets by followed
+  - [ ] Show tweets by user
 
 ## Todos (dev)
 
@@ -81,5 +80,7 @@ Follower
 ## Will not do
 
 - Block/unblock user and tweets
+- Followers
+- Tweet likes
 - Tweet replies
 - Retweets
