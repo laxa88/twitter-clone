@@ -1,4 +1,4 @@
-use rocket::response::status::{Created, NotFound};
+use rocket::response::status::{Created, Unauthorized};
 use rocket::serde::json::Json;
 use rocket_db_pools::sqlx;
 use rocket_db_pools::Connection;
@@ -32,7 +32,7 @@ pub async fn signup(
 pub async fn login(
     login: Json<AccountLogin>,
     mut db: Connection<MyRustDb>,
-) -> Result<String, NotFound<Json<ApiError>>> {
+) -> Result<String, Unauthorized<Json<ApiError>>> {
     // get user input
 
     // validate user input
@@ -49,10 +49,10 @@ pub async fn login(
 
             sign_jwt(account)
         })
-        .map_err(|e| {
-            NotFound(Json(ApiError {
-                details: e.to_string(),
-            }))
+        .map_err(|_| {
+            Unauthorized(Some(Json(ApiError {
+                details: "Incorrect username or password".to_string(),
+            })))
         });
 
     jwt
