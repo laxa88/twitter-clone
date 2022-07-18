@@ -1,4 +1,5 @@
-use rocket::response::status::{Created, Unauthorized};
+use rocket::http::Status;
+use rocket::response::status::{Created, Custom, Unauthorized};
 use rocket::serde::json::Json;
 use rocket_db_pools::sqlx;
 use rocket_db_pools::Connection;
@@ -13,7 +14,7 @@ use crate::lib::jwt::sign_jwt;
 pub async fn signup(
     new_account: Json<AccountCreate>,
     mut db: Connection<MyRustDb>,
-) -> Result<Created<Json<String>>, Json<ApiError>> {
+) -> Result<Created<Json<String>>, Custom<Json<ApiError>>> {
     sqlx::query("INSERT INTO account (email, username, password) VALUES ($1, $2, $3)")
         .bind(new_account.email.clone())
         .bind(new_account.username.clone())
@@ -22,9 +23,13 @@ pub async fn signup(
         .await
         .map(|_| Created::new("/").body(Json("Ok".to_string())))
         .map_err(|e| {
-            Json(ApiError {
-                details: e.to_string(),
-            })
+            // FIXME return status code doesn't work
+            Custom(
+                Status::InternalServerError,
+                Json(ApiError {
+                    details: e.to_string(),
+                }),
+            )
         })
 }
 
