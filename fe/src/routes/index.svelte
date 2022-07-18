@@ -1,36 +1,39 @@
 <script lang="ts">
-	let email = '';
-	let username = '';
-	let password = '';
+	import { storeJwt } from '$lib/store';
+	import { browser } from '$app/env';
+	import Login from './Login.svelte';
+	import Register from './Register.svelte';
 
-	const handleRegister = async () => {
-		const res = await fetch('http://localhost:8000/account/create', {
-			method: 'POST',
-			body: JSON.stringify({
-				email,
-				username,
-				password
-			})
-		});
+	if (browser) {
+		const jwt = window.localStorage.getItem('jwt');
+		storeJwt.set(jwt as string);
+	}
 
-		const data = await res.json();
+	let jwt = '';
+	storeJwt.subscribe((value) => {
+		if (browser) {
+			window.localStorage.setItem('jwt', value);
+			jwt = value;
+		}
+	});
 
-		console.log('###', data);
+	const handleLogout = () => {
+		if (browser) {
+			window.localStorage.removeItem('jwt');
+			storeJwt.set('');
+		}
 	};
 </script>
 
 <main>
-	<h1>Register new account</h1>
 	<div>
-		Email: <input bind:value={email} type="email" />
+		{#if jwt}
+			<button on:click={handleLogout}>Logout</button>
+		{:else}
+			<Login />
+			<Register />
+		{/if}
 	</div>
-	<div>
-		Username: <input bind:value={username} />
-	</div>
-	<div>
-		Password: <input bind:value={password} type="password" />
-	</div>
-	<button on:click={handleRegister}>Register</button>
 </main>
 
 <!--
