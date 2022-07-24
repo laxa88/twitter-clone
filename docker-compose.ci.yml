@@ -1,5 +1,6 @@
 # To run this specifically:
 # docker-compose -f docker-compose.ci.yml up
+# docker-compose -f docker-compose.ci.yml down
 
 version: '3.7'
 services:
@@ -13,12 +14,14 @@ services:
     ports:
       - "15433:5432"
     volumes:
+    #   - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./docker/db/rust-init:/docker-entrypoint-initdb.d
+    # command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
   rust-server:
     build: ./rust
     ports:
-      - "8001:8001" # for debug
+      - "8000:8000" # for debug (dev)
       - "8002:8002" # for release
     depends_on:
       - rust-db

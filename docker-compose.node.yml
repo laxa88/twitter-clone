@@ -1,0 +1,17 @@
+# To run this specifically:
+# docker-compose -f docker-compose.node.yml up
+# docker-compose -f docker-compose.node.yml down
+
+version: '3.7'
+services:
+  node-db:
+    hostname: my-node-db
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_DB=mynodedb
+      - POSTGRES_USER=mynodeuser
+      - POSTGRES_PASSWORD=mynodepassword
+    ports:
+      - "15432:5432"
+    volumes:
+      - ./docker/db/node-init:/docker-entrypoint-initdb.d
