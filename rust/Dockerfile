@@ -1,11 +1,10 @@
-# docker build -t <name> .
+# Manual build image: docker build -t <name> .
 
 FROM rust:1.61
 
 COPY . .
 
-RUN cargo build
-# RUN cargo build --release
+RUN cargo build --release
 
-CMD ["./target/debug/rust-backend"]
-# CMD ["./target/release/rust-backend"]
+# build file name is defined in Cargo.toml
+CMD ["./target/release/rust-backend"]

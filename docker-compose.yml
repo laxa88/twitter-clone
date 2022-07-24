@@ -25,19 +25,3 @@ services:
     #   - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./docker/db/rust-init:/docker-entrypoint-initdb.d
     # command: postgres -c config_file=/etc/postgresql/postgresql.conf
-    # networks:
-    #   - rust-backend
-
-  rust-server:
-    build: ./rust
-    ports:
-      - "8000:8000"
-    depends_on:
-      - rust-db
-    # networks:
-    #   - rust-backend
-
-# Default: twitter-clone_default i.e. <app-name>_default
-# networks:
-#   rust-backend:
-#     name: rust_backend_name

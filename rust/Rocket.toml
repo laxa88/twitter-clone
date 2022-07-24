@@ -1,17 +1,23 @@
+# Notes:
+# - Has to be 0.0.0.0 when starting inside docker container
+# - For local dev, it can be default (localhost)
+# - Make sure port is mapped in docker-compose file
+
 [debug]
 address = "0.0.0.0"
-port = 8000
+port = 8001
 
 [release]
 address = "0.0.0.0"
-port = 8001
+port = 8002
 
 [default]
 my_rocket_var_1 = "This is a value from Rocket.toml file"
 my_rocket_var_2 = 1.23
 
 [default.databases.myrustdb]
-# url = "postgresql://myrustuser:myrustpassword@my-rust-db:5432/myrustdb" # doesn't work
-url = "postgresql://myrustuser:myrustpassword@rust-db:5432/myrustdb" # works in container
-# url = "postgresql://myrustuser:myrustpassword@172.18.0.1:15433/myrustdb"
-# url = "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb" # works on local
+# within container (for CI uses)
+# hostname "rust-db" is defined in docker-compose file
+url = "postgresql://myrustuser:myrustpassword@rust-db:5432/myrustdb"
+# external server accessing into container (for local dev)
+# url = "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb"

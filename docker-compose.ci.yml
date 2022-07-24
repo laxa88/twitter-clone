@@ -1,0 +1,24 @@
+# To run this specifically:
+# docker-compose -f docker-compose.ci.yml up
+
+version: '3.7'
+services:
+  rust-db:
+    hostname: my-rust-db
+    image: postgres:11-alpine
+    environment:
+      - POSTGRES_DB=myrustdb
+      - POSTGRES_USER=myrustuser
+      - POSTGRES_PASSWORD=myrustpassword
+    ports:
+      - "15433:5432"
+    volumes:
+      - ./docker/db/rust-init:/docker-entrypoint-initdb.d
+
+  rust-server:
+    build: ./rust
+    ports:
+      - "8001:8001" # for debug
+      - "8002:8002" # for release
+    depends_on:
+      - rust-db
