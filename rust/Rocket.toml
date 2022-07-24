@@ -1,6 +1,17 @@
+[debug]
+address = "0.0.0.0"
+port = 8000
+
+[release]
+address = "0.0.0.0"
+port = 8001
+
 [default]
 my_rocket_var_1 = "This is a value from Rocket.toml file"
 my_rocket_var_2 = 1.23
 
 [default.databases.myrustdb]
-url = "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb"
+# url = "postgresql://myrustuser:myrustpassword@my-rust-db:5432/myrustdb" # doesn't work
+url = "postgresql://myrustuser:myrustpassword@rust-db:5432/myrustdb" # works in container
+# url = "postgresql://myrustuser:myrustpassword@172.18.0.1:15433/myrustdb"
+# url = "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb" # works on local
