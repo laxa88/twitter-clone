@@ -14,14 +14,12 @@ services:
     ports:
       - "15433:5432"
     volumes:
-    #   - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./docker/db/rust-init:/docker-entrypoint-initdb.d
-    # command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
   rust-server:
     build: ./rust
     ports:
-      - "8000:8000" # for debug (dev)
-      - "8002:8002" # for release
+      - "8002:8002"
     depends_on:
       - rust-db
+

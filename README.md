@@ -47,6 +47,7 @@ User
 Tweet
 - [x] Create tweet
 - [x] Get tweet by ID
+- [x] Get tweets by user
 - [ ] ~Delete tweet~
 
 Other
