@@ -5,15 +5,15 @@ on:
   pull_request:
     branches: [ main, master ]
 jobs:
-  docker:
-    timeout-minutes: 5
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+  # docker:
+  #   timeout-minutes: 5
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    - name: Start containers
-      run: docker-compose -f docker-compose.ci.yml up
+  #   - name: Start containers
+  #     run: docker-compose -f docker-compose.ci.yml up
 
   test:
     needs: docker
@@ -36,6 +36,7 @@ jobs:
       run: npx playwright install --with-deps
 
     - name: Run Playwright tests
+      working-directory: ./fe
       run: npm test
 
     - uses: actions/upload-artifact@v2
