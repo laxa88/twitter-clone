@@ -16,6 +16,7 @@ jobs:
       run: docker-compose -f docker-compose.ci.yml up
 
   test:
+    needs: docker
     timeout-minutes: 5
     runs-on: ubuntu-latest
     steps:
