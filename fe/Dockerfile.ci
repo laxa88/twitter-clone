@@ -1,0 +1,13 @@
+# Works, but we might want to match the version to Playwright, e.g. v1.24.1
+FROM mcr.microsoft.com/playwright:focal
+
+COPY package.json .
+COPY package-lock.json .
+RUN npm install
+COPY . .
+
+RUN npm run build
+
+EXPOSE 1234
+
+CMD npm run test

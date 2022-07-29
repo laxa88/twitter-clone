@@ -8,7 +8,7 @@
 	let error = '';
 
 	const handleLogin = async () => {
-		const res = await fetch('http://localhost:8000/login', {
+		const res = await fetch(`http://localhost:${variables.apiPort}/login`, {
 			method: 'POST',
 			body: JSON.stringify({
 				username,

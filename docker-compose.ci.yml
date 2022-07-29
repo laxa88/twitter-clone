@@ -1,5 +1,5 @@
 # To run this specifically:
-# docker-compose -f docker-compose.ci.yml up
+# docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe
 # docker-compose -f docker-compose.ci.yml down
 
 version: '3.7'
@@ -22,4 +22,13 @@ services:
       - "8002:8002"
     depends_on:
       - rust-db
+
+  fe:
+    build:
+      context: ./fe
+      dockerfile: Dockerfile.ci
+    ports:
+      - "1234:1234"
+    depends_on:
+      - rust-server
 
