@@ -8,10 +8,10 @@
 	let password = '';
 	let registered = false;
 
-	const { apiPort } = get(session as Writable<SessionData>);
+	const { apiHost, apiPort } = get(session as Writable<SessionData>);
 
 	const handleRegister = async () => {
-		const res = await fetch(`http://localhost:${apiPort}/signup`, {
+		const res = await fetch(`http://${apiHost}:${apiPort}/signup`, {
 			method: 'POST',
 			body: JSON.stringify({
 				email,

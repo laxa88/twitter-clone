@@ -8,6 +8,10 @@ const config: PlaywrightTestConfig = {
 		// Runs server (default port 4173)
 		command: 'npm run build && npm run preview -- --port 1122',
 
+		env: {
+			SECURE_API_PORT: '8002',
+		},
+
 		// Explicitly tell Playwright which port to connect to server
 		// url: 'http://localhost:1122'
 		port: 1122

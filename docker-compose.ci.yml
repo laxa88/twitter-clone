@@ -1,5 +1,5 @@
 # To run this specifically:
-# docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-e2e
+# docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
 # docker-compose -f docker-compose.ci.yml down
 
 version: '3.7'
@@ -23,7 +23,7 @@ services:
     depends_on:
       - rust-db
 
-  fe-e2e:
+  fe-ci:
     build:
       context: ./fe
       dockerfile: Dockerfile.ci
@@ -31,7 +31,10 @@ services:
       - "1234:1234"
     environment:
       # Injected from Github workflow's secret
+      - SECURE_API_HOST=${SECURE_API_HOST}
       - SECURE_API_PORT=${SECURE_API_PORT}
+      # - SECURE_API_HOST=rust-server
+      # - SECURE_API_PORT=8002
     depends_on:
       - rust-server
 

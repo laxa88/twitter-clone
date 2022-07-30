@@ -10,12 +10,13 @@
 	let password = '';
 	let error = '';
 
-	const { apiPort } = get(session as Writable<SessionData>);
+	const { apiHost, apiPort } = get(session as Writable<SessionData>);
 
+	console.log('### apiHost', apiHost);
 	console.log('### apiPort', apiPort);
 
 	const handleLogin = async () => {
-		const res = await fetch(`http://localhost:${apiPort}/login`, {
+		const res = await fetch(`http://${apiHost}:${apiPort}/login`, {
 			method: 'POST',
 			body: JSON.stringify({
 				username,

@@ -30,6 +30,7 @@ services:
     ports:
       - "1234:1234"
     environment:
+      - SECURE_API_HOST=localhost
       - SECURE_API_PORT=8002
     depends_on:
       - rust-server
