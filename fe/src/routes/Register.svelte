@@ -1,13 +1,11 @@
 <script lang="ts">
-	import { variables } from '$lib/variables';
-
 	let email = '';
 	let username = '';
 	let password = '';
 	let registered = false;
 
 	const handleRegister = async () => {
-		const res = await fetch(`http://localhost:${variables.apiPort}/signup`, {
+		const res = await fetch(`http://localhost:${process.env.SECURE_API_PORT}/signup`, {
 			method: 'POST',
 			body: JSON.stringify({
 				email,

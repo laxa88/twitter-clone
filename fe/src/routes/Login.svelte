@@ -8,7 +8,7 @@
 	let error = '';
 
 	const handleLogin = async () => {
-		const res = await fetch(`http://localhost:${variables.apiPort}/login`, {
+		const res = await fetch(`http://localhost:${process.env.SECURE_API_PORT}/login`, {
 			method: 'POST',
 			body: JSON.stringify({
 				username,
