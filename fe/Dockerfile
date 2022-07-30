@@ -11,4 +11,4 @@ RUN npm run build
 EXPOSE 1234
 
 # 0.0.0.0 ensures that docker can be access via localhost from outside
-CMD npm run preview -- --host 0.0.0.0
+CMD npm run preview -- --host 0.0.0.0 --port 1234
