@@ -4,6 +4,7 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
 jobs:
   docker:
     timeout-minutes: 60
@@ -17,13 +18,10 @@ jobs:
 
     - name: Verify secrets
       run: >
-        echo ${{ secrets.SECURE_API_HOST }} ${{ env.SECURE_API_HOST }}
+        echo ${{ secrets.SECURE_API_HOST }} ${{ secrets.SECURE_API_PORT }}
 
     - name: Run e2e test in docker
-      run: >
-        SECURE_API_HOST=${{ env.SECURE_API_HOST }}
-        SECURE_API_PORT=${{ env.SECURE_API_PORT }}
-        docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
+      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
 
   # docker:
   #   timeout-minutes: 60
