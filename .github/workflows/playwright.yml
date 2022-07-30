@@ -15,7 +15,7 @@ jobs:
     - name: Run e2e test in docker
       env:
         SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
-      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe
+      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-e2e
 
   # docker:
   #   timeout-minutes: 60

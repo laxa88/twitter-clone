@@ -1,5 +1,5 @@
 # To run this specifically:
-# docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe
+# docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-e2e
 # docker-compose -f docker-compose.ci.yml down
 
 version: '3.7'
