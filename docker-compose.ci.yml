@@ -29,6 +29,9 @@ services:
       dockerfile: Dockerfile.ci
     ports:
       - "1234:1234"
+    environment:
+      # Injected from Github workflow's secret
+      - SECURE_API_PORT=${SECURE_API_PORT}
     depends_on:
       - rust-server
 
