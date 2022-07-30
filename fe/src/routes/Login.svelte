@@ -38,7 +38,7 @@
 </script>
 
 <main>
-	<h1>Login ({apiHost}:{apiPort})</h1>
+	<h1>Login</h1>
 	<div>
 		Username: <input bind:value={username} />
 	</div>
