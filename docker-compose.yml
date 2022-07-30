@@ -17,3 +17,10 @@ services:
     #   - ./docker/db/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./docker/db/rust-init:/docker-entrypoint-initdb.d
     # command: postgres -c config_file=/etc/postgresql/postgresql.conf
+
+  rust-server:
+    build: ./rust
+    ports:
+      - "8002:8002"
+    depends_on:
+      - rust-db
