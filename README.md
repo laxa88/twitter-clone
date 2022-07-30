@@ -1,5 +1,7 @@
 # Twitter clone challenge
 
+[![Playwright Tests](https://github.com/laxa88/twitter-clone/actions/workflows/playwright.yml/badge.svg?branch=main)](https://github.com/laxa88/twitter-clone/actions/workflows/playwright.yml)
+
 This repository is just a practice project for me to write a full stack application, and as a boilerplate and reference for my future projects.
 
 ## Backend
