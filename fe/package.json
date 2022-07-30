@@ -2,10 +2,10 @@
 	"name": "fe",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev",
-		"build": "vite build",
+		"dev": "env-cmd vite dev",
+		"build": "env-cmd vite build",
 		"package": "svelte-kit package",
-		"preview": "vite preview",
+		"preview": "env-cmd vite preview",
 		"prepare": "svelte-kit sync",
 		"test": "playwright test",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
@@ -31,5 +31,8 @@
 		"typescript": "^4.7.4",
 		"vite": "^3.0.0"
 	},
-	"type": "module"
+	"type": "module",
+	"dependencies": {
+		"env-cmd": "^10.1.0"
+	}
 }

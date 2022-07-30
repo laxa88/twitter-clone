@@ -12,36 +12,46 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Start containers
-      run: docker-compose -f docker-compose.ci.yml up -d
+    - name: Run e2e test in docker
+      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe
 
-  test:
-    needs: docker
-    timeout-minutes: 10
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+  # docker:
+  #   timeout-minutes: 60
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    - name: Install node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.x'
+  #   - name: Start containers
+  #     run: docker-compose -f docker-compose.ci.yml up -d
 
-    - name: Install dependencies
-      working-directory: ./fe
-      run: npm ci
+  # test:
+  #   needs: docker
+  #   timeout-minutes: 10
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+  #   - name: Install node
+  #     uses: actions/setup-node@v2
+  #     with:
+  #       node-version: '16.x'
 
-    - name: Run Playwright tests
-      working-directory: ./fe
-      run: npm test
+  #   - name: Install dependencies
+  #     working-directory: ./fe
+  #     run: npm ci
 
-    - uses: actions/upload-artifact@v2
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+  #   - name: Install Playwright Browsers
+  #     run: npx playwright install --with-deps
+
+  #   - name: Run Playwright tests
+  #     working-directory: ./fe
+  #     run: npm test
+
+  #   - uses: actions/upload-artifact@v2
+  #     if: always()
+  #     with:
+  #       name: playwright-report
+  #       path: playwright-report/
+  #       retention-days: 30

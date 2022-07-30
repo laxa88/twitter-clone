@@ -1,9 +1,7 @@
 export const variables = {
-  apiPort: import.meta.env.VITE_API_PORT
+  // process.env injected via env-cmd
+  // Reference: https://joyofcode.xyz/sveltekit-environment-variables
+  apiPort: import.meta.env.VITE_API_PORT || process.env.SECURE_API_PORT
 }
 
-// grabs from .env if prepended with VITE_
-console.log('###1', variables);
-
-// doesn't work after compiling
-// console.log('###2', process.env.PORT);
+console.log("variables: ", variables)
