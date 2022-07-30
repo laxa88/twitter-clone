@@ -15,6 +15,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Verify secrets
+      run: >
+        echo ${{ secrets.SECURE_API_HOST }} ${{ env.SECURE_API_HOST }}
+
     - name: Run e2e test in docker
       run: >
         SECURE_API_HOST=${{ env.SECURE_API_HOST }}
