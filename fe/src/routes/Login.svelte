@@ -2,13 +2,20 @@
 	import type { ApiError } from 'src/lib/ApiError';
 	import { browser } from '$app/env';
 	import { storeJwt } from '$lib/store';
+	import { get, type Writable } from 'svelte/store';
+	import { session } from '$app/stores';
+	import type { SessionData } from 'src/hooks';
 
 	let username = '';
 	let password = '';
 	let error = '';
 
+	const { apiPort } = get(session as Writable<SessionData>);
+
+	console.log('### apiPort', apiPort);
+
 	const handleLogin = async () => {
-		const res = await fetch(`http://localhost:${process.env.SECURE_API_PORT}/login`, {
+		const res = await fetch(`http://localhost:${apiPort}/login`, {
 			method: 'POST',
 			body: JSON.stringify({
 				username,

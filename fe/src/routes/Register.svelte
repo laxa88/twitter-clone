@@ -1,11 +1,17 @@
 <script lang="ts">
+	import { get, type Writable } from 'svelte/store';
+	import { session } from '$app/stores';
+	import type { SessionData } from 'src/hooks';
+
 	let email = '';
 	let username = '';
 	let password = '';
 	let registered = false;
 
+	const { apiPort } = get(session as Writable<SessionData>);
+
 	const handleRegister = async () => {
-		const res = await fetch(`http://localhost:${process.env.SECURE_API_PORT}/signup`, {
+		const res = await fetch(`http://localhost:${apiPort}/signup`, {
 			method: 'POST',
 			body: JSON.stringify({
 				email,
