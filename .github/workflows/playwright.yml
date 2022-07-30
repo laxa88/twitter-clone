@@ -1,5 +1,9 @@
 name: Playwright Tests
 on:
+  schedule:
+    # Nice cron feature to run e2e outside of branch triggers.
+    # Perhaps I can run separate workflow to test deployed endpoints instead.
+    - cron: '0 0 * * *'
   push:
     branches: [ main, master ]
   pull_request:
