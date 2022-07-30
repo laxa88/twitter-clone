@@ -70,7 +70,7 @@ Other
 
 - [ ] Build apps as docker image
 - [ ] Deploy all images for production
-- [ ] E2E tests
+- [x] E2E tests
   - [ ] in local
   - [ ] in CI
 - [ ] CI deployment
