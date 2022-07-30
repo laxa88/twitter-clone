@@ -33,8 +33,6 @@ services:
       # Injected from Github workflow's secret
       - SECURE_API_HOST=${SECURE_API_HOST}
       - SECURE_API_PORT=${SECURE_API_PORT}
-      # - SECURE_API_HOST=rust-server
-      # - SECURE_API_PORT=8002
     depends_on:
       - rust-server
 

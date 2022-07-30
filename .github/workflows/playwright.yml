@@ -7,6 +7,9 @@ on:
 
 jobs:
   docker:
+    # Uncomment this if we use "environment secrets" instead of "repository secrets",
+    # and make sure the name matches.
+    # environment: ci
     timeout-minutes: 60
     runs-on: ubuntu-latest
     steps:
@@ -15,6 +18,7 @@ jobs:
 
     - name: Run e2e test in docker
       env:
+        # Make sure this is configured under "repository secrets" (top level)
         SECURE_API_HOST: ${{ secrets.SECURE_API_HOST }}
         SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
       run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
