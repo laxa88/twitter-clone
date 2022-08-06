@@ -1,4 +1,7 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // console.log("#####", process.env.CI === '1')
 // console.log("#####", process.env.CI)
