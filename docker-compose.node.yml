@@ -1,3 +1,6 @@
+# Unused in actual app. This is just for demonstrating that
+# docker can be used to start a Postgres database container.
+
 # To run this specifically:
 # docker-compose -f docker-compose.node.yml up
 # docker-compose -f docker-compose.node.yml down

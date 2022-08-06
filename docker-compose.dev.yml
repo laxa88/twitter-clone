@@ -1,3 +1,6 @@
+# This starts up DB, API server and frontend app containers.
+# Use only for smoke tests. Code changes are not reflected here.
+
 # To run this specifically:
 # docker-compose -f docker-compose.dev.yml up
 # docker-compose -f docker-compose.dev.yml down

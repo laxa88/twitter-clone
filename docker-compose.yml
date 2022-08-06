@@ -1,3 +1,8 @@
+# Starts the DB and API server only.
+# Use to quickly bring up and teardown the backend environment
+# while you develop on the frontend code.
+# Code changes on backend are not reflected in container.
+
 # Default file for development:
 # docker-compose up
 # docker-compose down
