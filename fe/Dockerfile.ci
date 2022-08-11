@@ -1,5 +1,7 @@
-# Works, but we might want to match the version to Playwright, e.g. v1.24.1
-FROM mcr.microsoft.com/playwright:focal
+# Latest versions may have breaking changes
+# FROM mcr.microsoft.com/playwright:focal
+
+FROM mcr.microsoft.com/playwright:v1.24.1
 
 COPY package.json .
 COPY package-lock.json .
