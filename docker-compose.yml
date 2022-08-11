@@ -24,7 +24,9 @@ services:
     # command: postgres -c config_file=/etc/postgresql/postgresql.conf
 
   rust-server:
-    build: ./rust
+    build:
+      context: ./rust
+      dockerfile: Dockerfile
     ports:
       - "8002:8002"
     depends_on:

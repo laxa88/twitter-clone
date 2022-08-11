@@ -21,7 +21,9 @@ services:
       - ./docker/db/rust-init:/docker-entrypoint-initdb.d
 
   rust-server:
-    build: ./rust
+    build:
+      context: ./rust
+      dockerfile: Dockerfile.ci
     ports:
       - "8002:8002"
     depends_on:
@@ -35,8 +37,9 @@ services:
       - "1234:1234"
     environment:
       # Injected from Github workflow's secret
-      - SECURE_API_HOST=${SECURE_API_HOST}
-      - SECURE_API_PORT=${SECURE_API_PORT}
+      # For confirmation, these values should be "rust-server" and "8002"
+      - SECURE_API_HOST=${SECURE_API_HOST:-rust-server}
+      - SECURE_API_PORT=${SECURE_API_PORT:-8002}
     depends_on:
       - rust-server
 

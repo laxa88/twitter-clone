@@ -20,7 +20,9 @@ services:
       - ./docker/db/rust-init:/docker-entrypoint-initdb.d
 
   rust-server:
-    build: ./rust
+    build:
+      context: ./rust
+      dockerfile: Dockerfile
     ports:
       - "8002:8002"
     depends_on:

@@ -4,7 +4,7 @@ FROM rust:1.61
 
 COPY . .
 
-RUN cargo build
+RUN cargo build --release
 
 # build file name is defined in Cargo.toml
-CMD ["./target/debug/rust-backend"]
+CMD ["./target/release/rust-backend"]
