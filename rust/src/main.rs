@@ -7,6 +7,7 @@ use service::account::get_account_by_id;
 use service::account::list_accounts;
 use service::auth::login;
 use service::auth::signup;
+use service::cors::all_options;
 use service::tweet::create_tweet;
 use service::tweet::get_tweet_by_id;
 use service::tweet::get_tweets_by_username;
@@ -34,6 +35,7 @@ fn rocket() -> _ {
         .mount(
             "/",
             routes![
+                all_options,
                 signup,
                 create_tweet,
                 get_account_by_id,
