@@ -10,6 +10,9 @@
 	let password = '';
 	let error = '';
 
+	// Every time username or password changes, reset error message.
+	$: username || password ? (error = '') : null;
+
 	const { apiHost, apiPort } = get(session as Writable<SessionData>);
 
 	console.log('### apiHost', apiHost);
