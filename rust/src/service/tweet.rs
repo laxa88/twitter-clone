@@ -32,17 +32,19 @@ pub async fn get_tweets_by_username(
     mut db: Connection<MyRustDb>,
     _account: Account, // FromRequest validation
     username: String,
-) -> Result<Json<Tweet>, NotFound<Json<ApiError>>> {
-    sqlx::query("SELECT * FROM tweet JOIN account ON tweet.account_id = account.id WHERE account.username = $1")
-        .bind(username)
-        .fetch_one(&mut *db)
-        .await
-        .map(|r| Json(Tweet::build_from_db(&r)))
-        .map_err(|e| {
-            NotFound(Json(ApiError {
-                details: e.to_string(),
-            }))
-        })
+) -> Result<Json<Vec<Tweet>>, NotFound<Json<ApiError>>> {
+    sqlx::query(
+        "SELECT t.* FROM tweet t JOIN account a ON t.account_id = a.id WHERE a.username = $1",
+    )
+    .bind(username)
+    .fetch_all(&mut *db)
+    .await
+    .map(|r| Json(Tweet::build_from_dbs(&r)))
+    .map_err(|e| {
+        NotFound(Json(ApiError {
+            details: e.to_string(),
+        }))
+    })
 }
 
 #[post("/tweet/create", data = "<new_tweet>")]

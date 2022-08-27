@@ -20,6 +20,10 @@ impl Tweet {
             created_at: row.get(3),
         }
     }
+
+    pub fn build_from_dbs(rows: &Vec<PgRow>) -> Vec<Self> {
+        rows.iter().map(|r| Tweet::build_from_db(r)).collect()
+    }
 }
 
 #[derive(Debug, Deserialize, FromForm)]
