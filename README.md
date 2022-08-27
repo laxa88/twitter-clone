@@ -110,7 +110,7 @@ Other
 
 - Logged-in pages
   - [x] Add tweet
-  - [ ] Show own tweets
+  - [x] Show own tweets
   - [ ] Show tweets by user
 
 ## Todos (dev)

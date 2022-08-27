@@ -34,7 +34,7 @@ pub async fn get_tweets_by_username(
     username: String,
 ) -> Result<Json<Vec<Tweet>>, NotFound<Json<ApiError>>> {
     sqlx::query(
-        "SELECT t.* FROM tweet t JOIN account a ON t.account_id = a.id WHERE a.username = $1",
+        "SELECT t.* FROM tweet t JOIN account a ON t.account_id = a.id WHERE a.username = $1 ORDER BY created_at DESC",
     )
     .bind(username)
     .fetch_all(&mut *db)
