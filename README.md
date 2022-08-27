@@ -58,8 +58,8 @@ To run the e2e tests locally with local environments variables:
 - Start the DB docker container. It's more convenient that installing Postgres on your computer.
 
   ```bash
-  # Run in detached mode
-  docker-compose up -d
+  # Spin up DB (for local dev) in detached mode
+  docker-compose up -d db
 
   # Stop and teardown when you're done
   docker-compose down
@@ -99,6 +99,7 @@ Tweet
 Other
 - [ ] Generic error handler
 - [ ] List pagination
+- [ ] Generic error handler (e.g. when JWT expires)
 
 ## Todos (UI)
 
@@ -108,7 +109,7 @@ Other
   - [x] Logout
 
 - Logged-in pages
-  - [ ] Add tweet
+  - [x] Add tweet
   - [ ] Show own tweets
   - [ ] Show tweets by user
 
