@@ -86,14 +86,21 @@ To run the e2e tests locally with local environments variables:
 User
 - [x] Create user
   - [ ] Validate empty inputs
+  - [ ] test
 - [x] List users
+  - [ ] test
 - [x] Get user by ID
+  - [ ] test
 - [x] Auth user
+  - [ ] test
 
 Tweet
 - [x] Create tweet
+  - [ ] test
 - [x] Get tweet by ID
+  - [ ] test
 - [x] Get tweets by user
+  - [ ] test
 - [ ] ~Delete tweet~
 
 Other
@@ -105,13 +112,19 @@ Other
 
 - Landing page
   - [x] Register user
+    - [ ] e2e test
   - [x] Login
+    - [x] e2e test
   - [x] Logout
+    - [x] e2e test
 
 - Logged-in pages
   - [x] Add tweet
+    - [ ] e2e test
   - [x] Show own tweets
+    - [ ] e2e test
   - [ ] Show tweets by user
+    - [ ] e2e test
 
 ## Todos (dev)
 
