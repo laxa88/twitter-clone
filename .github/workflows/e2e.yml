@@ -1,0 +1,33 @@
+name: Playwright Tests V2
+on:
+  schedule:
+    # Nice cron feature to run e2e outside of branch triggers.
+    # Perhaps I can run separate workflow to test deployed endpoints instead.
+    - cron: '0 0 * * *'
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  docker:
+    # Uncomment this if we use "environment secrets" instead of "repository secrets",
+    # and make sure the name matches.
+    # environment: ci
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Docker Layer Caching
+      uses: satackey/action-docker-layer-caching@v0.0.11
+      with:
+        key: docker-layer-caching-${{ github.workflow }}-{hash}
+
+    - name: Run e2e test in docker
+      env:
+        # Make sure this is configured under "repository secrets" (top level)
+        SECURE_API_HOST: ${{ secrets.SECURE_API_HOST }}
+        SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
+      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
