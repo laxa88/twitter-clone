@@ -52,7 +52,7 @@ jobs:
         key: docker-layer-caching-${{ github.workflow }}-{hash}
 
     - name: Start DB
-      run: docker-compose up rust-db
+      run: docker-compose up -d rust-db
 
     - name: Start Rust Server
       working-directory: rust
