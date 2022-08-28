@@ -20,14 +20,62 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Docker Layer Caching
+    - name: Cache rust
+      uses: actions/cache@v3.0.8
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          rust/target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+    - name: Get npm cache directory
+      id: npm-cache-dir
+      run: echo "::set-output name=dir::$(npm config get cache)"
+
+    - name: Cache npm
+      uses: actions/cache@v3.0.8
+      id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
+      with:
+        path: |
+          ${{ steps.npm-cache-dir.outputs.dir }}
+          **/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Cache docker layer
       uses: satackey/action-docker-layer-caching@v0.0.11
       with:
         key: docker-layer-caching-${{ github.workflow }}-{hash}
 
-    - name: Run e2e test in docker
-      env:
-        # Make sure this is configured under "repository secrets" (top level)
-        SECURE_API_HOST: ${{ secrets.SECURE_API_HOST }}
-        SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
-      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
+    - name: Start DB
+      run: docker-compose up rust-db
+
+    - name: Start Rust Server
+      working-directory: rust
+      run: cargo run
+
+    - name: Install npm dependencies
+      working-directory: fe
+      run: npm install
+
+    - name: Install Playwright
+      uses: microsoft/playwright-github-action@v1
+
+    - name: Start Sveltekit App
+      working-directory: fe
+      run: npm run build
+
+    - name: Run Playwright Tests
+      working-directory: fe
+      run: npm run test
+
+    # - name: Run e2e tests
+      # env:
+      #   # Make sure this is configured under "repository secrets" (top level)
+      #   SECURE_API_HOST: ${{ secrets.SECURE_API_HOST }}
+      #   SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
+      # run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
