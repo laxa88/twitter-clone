@@ -63,7 +63,7 @@ jobs:
       run: npm install
 
     - name: Install Playwright
-      uses: microsoft/playwright-github-action@v1
+      run: npx playwright install-deps
 
     - name: Start Sveltekit App
       working-directory: fe
