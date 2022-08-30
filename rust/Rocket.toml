@@ -9,7 +9,7 @@ port = 8000
 
 [release]
 address = "0.0.0.0"
-port = 8002
+port = 8000
 
 [default]
 my_rocket_var_1 = "This is a value from Rocket.toml file"
@@ -22,4 +22,5 @@ url = "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb"
 [release.databases.myrustdb]
 # within container (for CI uses)
 # hostname "rust-db" is defined in docker-compose file
-url = "postgresql://myrustuser:myrustpassword@rust-db:5432/myrustdb"
+# url = "postgresql://myrustuser:myrustpassword@rust-db:5432/myrustdb"
+url = "postgresql://myrustuser:myrustpassword@localhost:15433/myrustdb"

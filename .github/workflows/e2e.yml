@@ -54,9 +54,13 @@ jobs:
     - name: Start DB
       run: docker-compose up -d rust-db
 
-    - name: Start Rust Server
+    - name: Build rust server
       working-directory: rust
-      run: cargo run
+      run: cargo build --release
+
+    - name: Run rust server
+      working-directory: rust
+      run: ./target/release/rust-backend &
 
     - name: Install npm dependencies
       working-directory: fe
@@ -64,10 +68,6 @@ jobs:
 
     - name: Install Playwright
       run: npx playwright install-deps
-
-    - name: Start Sveltekit App
-      working-directory: fe
-      run: npm run build
 
     - name: Run Playwright Tests
       working-directory: fe
