@@ -2,72 +2,72 @@
 # Pro: Easier to test locally via docker-compose
 # Con: Big-bang pass or fail in one step; No caching in workflow
 
-name: Playwright Tests
-on:
-  schedule:
-    # Nice cron feature to run e2e outside of branch triggers.
-    # Perhaps I can run separate workflow to test deployed endpoints instead.
-    - cron: '0 0 * * *'
-  push:
-    branches: [ main, master ]
-  pull_request:
-    branches: [ main, master ]
+# name: Playwright Tests
+# on:
+#   schedule:
+#     # Nice cron feature to run e2e outside of branch triggers.
+#     # Perhaps I can run separate workflow to test deployed endpoints instead.
+#     - cron: '0 0 * * *'
+#   push:
+#     branches: [ main, master ]
+#   pull_request:
+#     branches: [ main, master ]
 
-jobs:
-  docker:
-    # Uncomment this if we use "environment secrets" instead of "repository secrets",
-    # and make sure the name matches.
-    # environment: ci
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2
+# jobs:
+#   docker:
+#     # Uncomment this if we use "environment secrets" instead of "repository secrets",
+#     # and make sure the name matches.
+#     # environment: ci
+#     timeout-minutes: 60
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout
+#       uses: actions/checkout@v2
 
-    - name: Run e2e test in docker
-      env:
-        # Make sure this is configured under "repository secrets" (top level)
-        SECURE_API_HOST: ${{ secrets.SECURE_API_HOST }}
-        SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
-      run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
+#     - name: Run e2e test in docker
+#       env:
+#         # Make sure this is configured under "repository secrets" (top level)
+#         SECURE_API_HOST: ${{ secrets.SECURE_API_HOST }}
+#         SECURE_API_PORT: ${{ secrets.SECURE_API_PORT }}
+#       run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from fe-ci
 
-  # docker:
-  #   timeout-minutes: 60
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
+#   # docker:
+#   #   timeout-minutes: 60
+#   #   runs-on: ubuntu-latest
+#   #   steps:
+#   #   - name: Checkout
+#   #     uses: actions/checkout@v2
 
-  #   - name: Start containers
-  #     run: docker-compose -f docker-compose.ci.yml up -d
+#   #   - name: Start containers
+#   #     run: docker-compose -f docker-compose.ci.yml up -d
 
-  # test:
-  #   needs: docker
-  #   timeout-minutes: 10
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #   - name: Checkout
-  #     uses: actions/checkout@v2
+#   # test:
+#   #   needs: docker
+#   #   timeout-minutes: 10
+#   #   runs-on: ubuntu-latest
+#   #   steps:
+#   #   - name: Checkout
+#   #     uses: actions/checkout@v2
 
-  #   - name: Install node
-  #     uses: actions/setup-node@v2
-  #     with:
-  #       node-version: '16.x'
+#   #   - name: Install node
+#   #     uses: actions/setup-node@v2
+#   #     with:
+#   #       node-version: '16.x'
 
-  #   - name: Install dependencies
-  #     working-directory: ./fe
-  #     run: npm ci
+#   #   - name: Install dependencies
+#   #     working-directory: ./fe
+#   #     run: npm ci
 
-  #   - name: Install Playwright Browsers
-  #     run: npx playwright install --with-deps
+#   #   - name: Install Playwright Browsers
+#   #     run: npx playwright install --with-deps
 
-  #   - name: Run Playwright tests
-  #     working-directory: ./fe
-  #     run: npm test
+#   #   - name: Run Playwright tests
+#   #     working-directory: ./fe
+#   #     run: npm test
 
-  #   - uses: actions/upload-artifact@v2
-  #     if: always()
-  #     with:
-  #       name: playwright-report
-  #       path: playwright-report/
-  #       retention-days: 30
+#   #   - uses: actions/upload-artifact@v2
+#   #     if: always()
+#   #     with:
+#   #       name: playwright-report
+#   #       path: playwright-report/
+#   #       retention-days: 30
