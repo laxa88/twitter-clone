@@ -28,5 +28,5 @@ test('test login and logout', async ({ page }) => {
   await page.locator('text=Logout').click();
 
   // Click h1:has-text("Login")
-  expect(await page.textContent('h1')).toBe('Login fail');
+  expect(await page.textContent('h1')).toBe('Login');
 });
