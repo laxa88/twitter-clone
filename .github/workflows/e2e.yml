@@ -39,9 +39,13 @@ jobs:
       uses: actions/cache@v3.0.8
       id: npm-cache # use this to check for `cache-hit` ==> if: steps.npm-cache.outputs.cache-hit != 'true'
       with:
+        # 1st line is npm directory from above step
+        # 2nd line is curr directory and all children's node_modules
+        # 3rd line is Playwright installation
         path: |
           ${{ steps.npm-cache-dir.outputs.dir }}
           **/node_modules
+          /home/runner/.cache
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
